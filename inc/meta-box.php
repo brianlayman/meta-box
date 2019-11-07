@@ -377,17 +377,19 @@ class RW_Meta_Box {
 	 * @return array $fields Normalized fields.
 	 */
 	public static function normalize_fields( $fields, $storage = null ) {
-		foreach ( $fields as $k => $field ) {
-			$field = RWMB_Field::call( 'normalize', $field );
+		if ( is_array( $fields ) ) {
+			foreach ( $fields as $k => $field ) {
+				$field = RWMB_Field::call( 'normalize', $field );
 
-			// Allow to add default values for fields.
-			$field = apply_filters( 'rwmb_normalize_field', $field );
-			$field = apply_filters( "rwmb_normalize_{$field['type']}_field", $field );
-			$field = apply_filters( "rwmb_normalize_{$field['id']}_field", $field );
+				// Allow to add default values for fields.
+				$field = apply_filters( 'rwmb_normalize_field', $field );
+				$field = apply_filters( "rwmb_normalize_{$field['type']}_field", $field );
+				$field = apply_filters( "rwmb_normalize_{$field['id']}_field", $field );
 
-			$field['storage'] = $storage;
+				$field['storage'] = $storage;
 
-			$fields[ $k ] = $field;
+				$fields[ $k ] = $field;
+			}
 		}
 
 		return $fields;
